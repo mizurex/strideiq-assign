@@ -3,6 +3,7 @@
 
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 //  Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+// database url will be deleted in 2 days, due to to some error had to hardcode it
 
 generator client {
   provider = "prisma-client"
@@ -11,8 +12,8 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+   provider = "postgresql"
+   url      = env("DATABASE_URL")
   }
 
 

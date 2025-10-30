@@ -50,6 +50,7 @@ const config: runtime.GetPrismaClientConfig = {
     "db"
   ],
   "activeProvider": "postgresql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
@@ -58,8 +59,8 @@ const config: runtime.GetPrismaClientConfig = {
       }
     }
   },
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n//  Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider      = \"prisma-client\"\n  output        = \"../src/generated\"\n  binaryTargets = [\"native\", \"debian-openssl-3.0.x\"]\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel Rule {\n  id         String   @id @default(uuid())\n  orgId      String\n  name       String\n  conditions Json\n  actions    String[]\n  priority   Int\n  active     Boolean  @default(true)\n}\n\nmodel Evaluation {\n  id           String   @id @default(uuid())\n  orgId        String\n  expense      String\n  matchedRules String[]\n  actions      String[]\n  trace        Json\n  createdAt    DateTime @default(now())\n}\n",
-  "inlineSchemaHash": "f118dd90a632ced477fac790fdbbfb15d398861851663eef17967f4adcae7d8f",
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n//  Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n// database url will be deleted in 2 days, due to to some error had to hardcode it\n\ngenerator client {\n  provider      = \"prisma-client\"\n  output        = \"../src/generated\"\n  binaryTargets = [\"native\", \"debian-openssl-3.0.x\"]\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel Rule {\n  id         String   @id @default(uuid())\n  orgId      String\n  name       String\n  conditions Json\n  actions    String[]\n  priority   Int\n  active     Boolean  @default(true)\n}\n\nmodel Evaluation {\n  id           String   @id @default(uuid())\n  orgId        String\n  expense      String\n  matchedRules String[]\n  actions      String[]\n  trace        Json\n  createdAt    DateTime @default(now())\n}\n",
+  "inlineSchemaHash": "5faa456a3201d0418214a7e39bfdafa6688df43134e7715356d0aa227ad9db6e",
   "copyEngine": true,
   "runtimeDataModel": {
     "models": {},
