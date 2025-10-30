@@ -13,6 +13,13 @@ https://github.com/user-attachments/assets/92b650fb-4f7c-47aa-b846-9450207d0834
 
 Minimal steps to run the project.
 
+## Stack
+- typescript
+- nodejs
+- react
+- prisma
+- postgresql (neon db for cloud)
+
 ## Backend (server)
 ```bash
 cd server
