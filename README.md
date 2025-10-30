@@ -9,12 +9,13 @@ npm install
 npx prisma generate
 npm run dev
 ```
-- Add MONGO_DB_URI in .env file
+- Add DatabaseURL in .env file
+- This project uses Neon DB
 
 - Base URL: `http://localhost:3000`
 - Health: `GET /api/ping`
 - Evaluate: `POST /policies/evaluate`
-- Rules: `GET/POST/DELETE/PATCH /rules`
+- Rules: `GET POST DELETE PATCH rules`
 - Evaluations: `GET /evaluations`
 
 - IMP - cd/server
