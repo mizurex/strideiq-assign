@@ -7,12 +7,13 @@
 generator client {
   provider = "prisma-client"
   output = "../src/generated"
+  binaryTargets = ["native", "debian-openssl-3.0.x"]
 }
 
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://neondb_owner:npg_3R8WYPVXlmua@ep-fancy-voice-adqt8s7y-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
-}
+  url      = env("DATABASE_URL")
+  }
 
 
 model Rule {

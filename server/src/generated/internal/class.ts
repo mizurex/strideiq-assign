@@ -33,6 +33,10 @@ const config: runtime.GetPrismaClientConfig = {
         "fromEnvVar": null,
         "value": "windows",
         "native": true
+      },
+      {
+        "fromEnvVar": null,
+        "value": "debian-openssl-3.0.x"
       }
     ],
     "previewFeatures": [],
@@ -49,13 +53,13 @@ const config: runtime.GetPrismaClientConfig = {
   "inlineDatasources": {
     "db": {
       "url": {
-        "fromEnvVar": null,
-        "value": "postgresql://neondb_owner:npg_3R8WYPVXlmua@ep-fancy-voice-adqt8s7y-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
+        "fromEnvVar": "DATABASE_URL",
+        "value": null
       }
     }
   },
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client\"\n  output   = \"../src/generated\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = \"postgresql://neondb_owner:npg_3R8WYPVXlmua@ep-fancy-voice-adqt8s7y-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require\"\n}\n\nmodel Rule {\n  id         String   @id @default(uuid())\n  orgId      String\n  name       String\n  conditions Json\n  actions    String[]\n  priority   Int\n  active     Boolean  @default(true)\n}\n\nmodel Evaluation {\n  id           String   @id @default(uuid())\n  orgId        String\n  expense      String\n  matchedRules String[]\n  actions      String[]\n  trace        Json\n  createdAt    DateTime @default(now())\n}\n",
-  "inlineSchemaHash": "a2c2348e686bf1ae685214197e93356e5f46cb5d042707617a22486dd7fe86da",
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider      = \"prisma-client\"\n  output        = \"../src/generated\"\n  binaryTargets = [\"native\", \"debian-openssl-3.0.x\"]\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel Rule {\n  id         String   @id @default(uuid())\n  orgId      String\n  name       String\n  conditions Json\n  actions    String[]\n  priority   Int\n  active     Boolean  @default(true)\n}\n\nmodel Evaluation {\n  id           String   @id @default(uuid())\n  orgId        String\n  expense      String\n  matchedRules String[]\n  actions      String[]\n  trace        Json\n  createdAt    DateTime @default(now())\n}\n",
+  "inlineSchemaHash": "0f39a9449f16fdaa2ed7a67b368639ec76ebeb0de421251c407d79cfe9c8e252",
   "copyEngine": true,
   "runtimeDataModel": {
     "models": {},
