@@ -1,5 +1,5 @@
 {
-  "name": "server",
+  "name": "backend for strideiq assignment",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -9,8 +9,7 @@
     "start": "node dist/server.js",
     "lint": "eslint . --ext .ts",
     "test": "jest",
-    "postinstall": "prisma generate && npm run copy:prisma",
-    "copy:prisma": "cp node_modules/.prisma/client/libquery_engine-debian-openssl-3.0.x.so.node node_modules/@prisma/client/"
+    "postinstall": "prisma generate && node scripts/copy-engine.cjs"
   },
   "keywords": [],
   "author": "",
