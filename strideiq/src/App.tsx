@@ -15,6 +15,7 @@ type Rule = {
   active: boolean;
 };
 
+
 const API_BASE = "http://localhost:3000";
 
 function RulesManager() {
@@ -48,16 +49,16 @@ function RulesManager() {
     if (!o) return;
     setLoading(true);
     setError(null);
-    try {
-      const res = await fetch(`${API_BASE}/rules?orgId=${encodeURIComponent(o)}`);
-      if (!res.ok) throw new Error(`Load failed ${res.status}`);
-      const data: Rule[] = await res.json();
-      setRules(data);
-    } catch (e: any) {
-      setError(e.message || "Failed to load rules");
-    } finally {
-      setLoading(false);
-    }
+    fetch(`${API_BASE}/rules?orgId=${encodeURIComponent(o)}`)
+      .then(async (res) => {
+        if (!res.ok) {
+          setError(`Load failed ${res.status}`)
+          return
+        }
+        const data: Rule[] = await res.json()
+        setRules(data)
+      })
+      .finally(() => setLoading(false))
   }
 
   useEffect(() => {
@@ -106,24 +107,24 @@ function RulesManager() {
   }
 
   async function deleteRule(id: string) {
-    try {
-      const res = await fetch(`${API_BASE}/rules/${id}`, { method: "DELETE" });
-      if (!res.ok && res.status !== 204) throw new Error("Delete failed");
-      setRules(rules.filter((r) => r.id !== id));
-    } catch (e: any) {
-      setError(e.message || "Delete failed");
+    setError(null)
+    const res = await fetch(`${API_BASE}/rules/${id}`, { method: "DELETE" })
+    if (!res.ok && res.status !== 204) {
+      setError("Delete failed")
+      return
     }
+    setRules(rules.filter((r) => r.id !== id))
   }
 
   async function toggleRule(id: string) {
-    try {
-      const res = await fetch(`${API_BASE}/rules/${id}/active`, { method: "PATCH" });
-      if (!res.ok) throw new Error("Toggle failed");
-      const updated: Rule = await res.json();
-      setRules(rules.map((r) => (r.id === id ? updated : r)));
-    } catch (e: any) {
-      setError(e.message || "Toggle failed");
+    setError(null)
+    const res = await fetch(`${API_BASE}/rules/${id}/active`, { method: "PATCH" })
+    if (!res.ok) {
+      setError("Toggle failed")
+      return
     }
+    const updated: Rule = await res.json()
+    setRules(rules.map((r) => (r.id === id ? updated : r)))
   }
 
   return (
@@ -237,36 +238,27 @@ function TestPanel() {
     "working_hours": 13
   }
 }`);
-  const [result, setResult] = useState<any>(null);
+  const [result, setResult] = useState<unknown>(null);
   const [error, setError] = useState<string | null>(null);
 
   async function evaluate() {
-    setError(null);
-    setResult(null);
-    try {
-      const body = JSON.parse(payload);
-      const res = await fetch(`${API_BASE}/policies/evaluate`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
-      if (!res.ok) throw new Error(`Request failed ${res.status}`);
-      const data = await res.json();
-      setResult(data);
-    } catch (e: any) {
-      setError(e.message || "Invalid input");
+    setError(null)
+    setResult(null)
+    const body = JSON.parse(payload)
+    const res = await fetch(`${API_BASE}/policies/evaluate`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    })
+    if (!res.ok) {
+      setError(`Request failed ${res.status}`)
+      return
     }
+    const data = await res.json()
+    setResult(data)
   }
 
-  useEffect(() => {
-    try {
-      const obj = JSON.parse(payload);
-      if (obj && obj.orgId !== orgId) {
-        obj.orgId = orgId;
-        setPayload(JSON.stringify(obj, null, 2));
-      }
-    } catch {}
-  }, [orgId]);
+  
 
   return (
     <div className="space-y-4">
@@ -325,24 +317,24 @@ export default function App() {
 
 function RecentEvaluations() {
   const [orgId, setOrgId] = useState("123")
-  const [items, setItems] = useState<any[]>([])
+  const [items, setItems] = useState<unknown[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   async function load() {
     setLoading(true)
     setError(null)
-    try {
-      const url = orgId ? `${API_BASE}/evaluations?orgId=${encodeURIComponent(orgId)}&limit=10` : `${API_BASE}/evaluations?limit=10`
-      const res = await fetch(url)
-      if (!res.ok) throw new Error(`Load failed ${res.status}`)
-      const data = await res.json()
-      setItems(data)
-    } catch (e: any) {
-      setError(e.message || 'Failed to load')
-    } finally {
-      setLoading(false)
-    }
+    const url = orgId ? `${API_BASE}/evaluations?orgId=${encodeURIComponent(orgId)}&limit=10` : `${API_BASE}/evaluations?limit=10`
+    fetch(url)
+      .then(async (res) => {
+        if (!res.ok) {
+          setError(`Load failed ${res.status}`)
+          return
+        }
+        const data = await res.json()
+        setItems(data)
+      })
+      .finally(() => setLoading(false))
   }
 
   useEffect(() => { load() }, [])
@@ -367,7 +359,7 @@ function RecentEvaluations() {
             <div className="max-h-80 overflow-auto">
               {items.map((e, i) => (
                 <div key={i} className="grid grid-cols-[1fr_1fr_1fr] text-sm px-3 py-2 border-t">
-                  <div className="whitespace-pre-wrap break-words">{e.expense}</div>
+                  <div className="whitespace-pre-wrap break-words">{(e as { expense: string }).expense}</div>
             
                 </div>
               ))}
