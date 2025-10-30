@@ -1,4 +1,12 @@
-# StrideIQ
+# StrideIQ 
+
+### DEMO
+
+
+https://github.com/user-attachments/assets/b09cc163-f351-42a1-aaca-3f22e21592a2
+
+
+
 
 Minimal steps to run the project.
 
@@ -30,6 +38,7 @@ npm run dev
 - Use the Rules, Test, and Recent Evaluations panels.
 - add const API_BASE = "http://localhost:3000"; APP.tsx
 
-- IMP cd/strideiq
+- IMP- cd/strideiq
+
 
 
