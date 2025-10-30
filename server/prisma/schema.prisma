@@ -1,0 +1,35 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output = "../src/generated"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://neondb_owner:npg_3R8WYPVXlmua@ep-fancy-voice-adqt8s7y-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
+}
+
+
+model Rule {
+  id          String   @id @default(uuid())
+  orgId       String
+  name        String
+  conditions  Json       
+  actions     String[]  
+  priority    Int
+  active      Boolean   @default(true)
+}
+model Evaluation {
+  id           String    @id @default(uuid())    
+  orgId        String
+  expense      String
+  matchedRules String[]
+  actions      String[]
+  trace        Json
+  createdAt    DateTime  @default(now())
+}
