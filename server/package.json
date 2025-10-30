@@ -8,7 +8,9 @@
     "build": "tsc",
     "start": "node dist/server.js",
     "lint": "eslint . --ext .ts",
-    "test": "jest"
+    "test": "jest",
+    "postinstall": "prisma generate && npm run copy:prisma",
+    "copy:prisma": "cp node_modules/.prisma/client/libquery_engine-debian-openssl-3.0.x.so.node node_modules/@prisma/client/"
   },
   "keywords": [],
   "author": "",
