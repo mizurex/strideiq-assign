@@ -6,7 +6,7 @@ import rulesRouter from './route/rules'
 import evaluationsRouter from './route/evaluations'
 
 const app = express()
-const port = 3000
+const port = process.env.PORT || 4000 
 
 app.use(express.json())
 app.use(cors())
