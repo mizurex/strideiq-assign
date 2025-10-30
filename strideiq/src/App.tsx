@@ -16,7 +16,7 @@ type Rule = {
 };
 
 
-const API_BASE = "http://localhost:3000";
+const API_BASE = "https://strideiq.onrender.com";
 
 function RulesManager() {
   const [orgId, setOrgId] = useState("123");
@@ -232,9 +232,7 @@ function TestPanel() {
   const [payload, setPayload] = useState(`{
   "orgId": "123",
   "expense": {
-    "expense_id": "exp_1",
     "amount": 2500,
-    "category": "Food",
     "working_hours": 13
   }
 }`);

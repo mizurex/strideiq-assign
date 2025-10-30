@@ -4,7 +4,6 @@ import { PrismaClient } from '../generated/client'
 const prisma = new PrismaClient()
 const router = express.Router()
 
-// GET /evaluations?orgId=123&limit=10
 router.get('/', async (req, res) => {
   const orgId = req.query.orgId ? String(req.query.orgId) : undefined
   const limit = req.query.limit ? Math.min(Number(req.query.limit), 50) : 10
