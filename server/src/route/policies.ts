@@ -10,13 +10,13 @@ router.post('/evaluate', async (req, res) => {
         }
 
         
-        const { orgId, expense } = (req.body ?? {}) as { orgId?: string; expense?: unknown };
+        const { orgId, expense } = (req.body ?? {}) as { orgId?: string; expense?:{amount:number,working_hours:number,category:string}};
        
         if (!orgId || expense === undefined) {
             return res.status(400).json({ error: 'orgId and expense are required in JSON body' });
         }
 
-        const result = await evaluatePolicy(orgId, expense as Record<string, unknown>);
+        const result = await evaluatePolicy(orgId, expense);
        
         res.json(result);
     } catch (err) {

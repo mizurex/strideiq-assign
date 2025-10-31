@@ -19,22 +19,57 @@ export interface Rule {
   active: boolean;
 }
 
+
+// payload example: 
+// {
+//   "orgId": "123",
+//   "expense": {
+//     "amount": 2600,
+//     "working_hours": 13,
+//     "category" : "Food"
+//   }
+// }
+
+// Example of conditions structure:
+// {
+//   name: "example",
+//   conditions: [
+//     { field: "amount", operator: ">", value: 2000 },           // Condition 1
+//     { field: "working_hours", operator: ">", value: 12 }       // Condition 2
+//   ]
+// }
+
+
+
 function checkExpense(expense: Record<string, unknown>, rule: Rule): boolean {
   const conditions = rule.conditions as Condition[]; 
 
   if (!Array.isArray(conditions)) return false; 
 
+
   for (const cond of conditions) { 
     const t  = cond.field;
-    const v = cond.category;
     const expenseValue = expense[t]; // expense["amount"] 
-   
 
     if (expenseValue === undefined) return false;
 
 
-  let matched = false;
-
+    let matched = false;
+   
+     
+     if(t === "category"){ //for categories
+       switch (cond.operator) {
+      case "==":
+        matched = expense[t] === cond.value; 
+        break;
+      case "!=":
+        matched = expense[t] !== cond.value; 
+        break;
+      default:
+        matched = false;
+     }
+    }
+    else{ 
     switch (cond.operator) {
       case ">":
         matched = Number(expenseValue) > Number(cond.value); 
@@ -49,7 +84,8 @@ function checkExpense(expense: Record<string, unknown>, rule: Rule): boolean {
         matched = Number(expenseValue) <= Number(cond.value); 
         break;
       default:
-        matched = false;
+          matched = false;
+      }
     }
 
     if (!matched) return false;
@@ -59,7 +95,7 @@ function checkExpense(expense: Record<string, unknown>, rule: Rule): boolean {
 }
 
 
-export async function evaluatePolicy(orgId: string, expense: Record<string, unknown>) {
+export async function evaluatePolicy(orgId: string, expense: {amount:number,working_hours:number,category:string}) {
     //find the org
   const rules: Rule[] = await prisma.rule.findMany({
     where: { orgId, active: true },

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 type Condition = {
   field: string;
   operator: string;
-  value: number;
+  value: string | number;
 };
 
 type Rule = {
@@ -33,6 +33,8 @@ function RulesManager() {
   });
   const [cond, setCond] = useState({ field: "amount", operator: ">", value: "" });
   const [conditionsDraft, setConditionsDraft] = useState<Condition[]>([]);
+  const [catOp, setCatOp] = useState("==");
+  const [catVal, setCatVal] = useState("Food");
 
   const formatConditions = (conditions: Condition[]): string =>
     !Array.isArray(conditions) || conditions.length === 0
@@ -77,6 +79,11 @@ function RulesManager() {
 
   function removeCondition(index: number) {
     setConditionsDraft(prev => prev.filter((_, i) => i !== index));
+  }
+
+  function addCategoryCondition() {
+    setError(null);
+    setConditionsDraft(prev => [...prev, { field: "category", operator: catOp, value: catVal }]);
   }
 
   async function createRule() {
@@ -149,6 +156,20 @@ function RulesManager() {
             </button>
             {loading && <span className="text-sm text-gray-500">Loading…</span>}
             {error && <span className="text-sm text-red-600">{error}</span>}
+          </div>
+
+          <div className="text-sm font-medium mt-2">Add category condition</div>
+          <div className="flex flex-wrap gap-3 items-center">
+            <select value={catVal} onChange={(e) => setCatVal(e.target.value)} className="border border-gray-300 rounded-md px-2 py-1 text-sm">
+              <option>Food</option>
+              <option>Alcohol</option>
+              <option>Trip</option>
+            </select>
+            <select value={catOp} onChange={(e) => setCatOp(e.target.value)} className="border border-gray-300 rounded-md px-2 py-1 text-sm">
+              <option value="==">==</option>
+              <option value="!=">!=</option>
+            </select>
+            <button onClick={addCategoryCondition} className="px-3 py-1 bg-black text-white text-sm rounded-md hover:bg-gray-800">Add category</button>
           </div>
 
           <div className="flex flex-wrap gap-3">
